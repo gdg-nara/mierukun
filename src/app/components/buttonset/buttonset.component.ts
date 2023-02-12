@@ -31,7 +31,7 @@ export class ButtonsetComponent {
     // 同時に複数のボタンを有効化できない設定の場合、有効化されたボタンを終了する
     if (!this.multiple) {
       for (const [name, state] of this.buttonsetState) {
-        if (button !== name) {
+        if (button !== name && state.started) {
           state.started = false;
           this.clickButtonset.emit({
             button: name,
