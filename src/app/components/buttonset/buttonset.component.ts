@@ -1,8 +1,11 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 
+export type ButtonEvent = 'START' | 'END';
+
 // コンポーネント外部に送出するイベントの引数
 export interface ClickButtonset {
   button: string;
+  event: ButtonEvent;
   time: number;
 }
 
@@ -35,6 +38,7 @@ export class ButtonsetComponent {
           state.started = false;
           this.clickButtonset.emit({
             button: name,
+            event: 'END',
             time: Date.now()
           });
         }
@@ -55,6 +59,7 @@ export class ButtonsetComponent {
 
       this.clickButtonset.emit({
         button: buttonState.name,
+        event: 'START',
         time: buttonState.startTime
       });
 
@@ -67,6 +72,7 @@ export class ButtonsetComponent {
 
       this.clickButtonset.emit({
         button: buttonState.name,
+        event: buttonState.started ? 'START' : 'END',
         time: Date.now()
       });
     }
