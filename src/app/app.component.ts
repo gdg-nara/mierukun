@@ -12,8 +12,12 @@ export class AppComponent {
   // app-buttonset コンポーネントへの入力
   // ボタンの文字列の配列
   public buttonset: string[] = [
-    '先生が話す',
-    '子どもが話す',
+    '先生の説明',
+    '先生←→全体',
+    '生徒個別活動',
+    '生徒共同作業',
+    '生徒ペア (近隣) 活動',
+    '生徒グループ活動'
   ];
 
   /**
@@ -23,4 +27,5 @@ export class AppComponent {
   public onClickButtonset(event: ClickButtonset): void {
     console.debug(event);
   }
+
 }
