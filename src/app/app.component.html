@@ -1,8 +1,5 @@
 <div class="content" role="main">
-  <p>みえるもん君</p>
-  <mat-slide-toggle>Angular Material トグルコンポーネント</mat-slide-toggle>
+  <app-buttonset [buttonset]="buttonset" (clickButtonset)="onClickButtonset($event)"></app-buttonset>
 </div>
-
-<app-buttonset [buttonset]="buttonset" (clickButtonset)="onClickButtonset($event)"></app-buttonset>
 
 <router-outlet></router-outlet>

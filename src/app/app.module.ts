@@ -13,9 +13,6 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 // ボタンのコンポーネント
 import { ButtonsetComponent } from './components/buttonset/buttonset.component';
 
-// Material UI slide toggle
-import { MatSlideToggleModule } from '@angular/material/slide-toggle';
-
 @NgModule({
   declarations: [
     AppComponent,
@@ -29,8 +26,6 @@ import { MatSlideToggleModule } from '@angular/material/slide-toggle';
     MatCardModule,
     MatRippleModule,
     MatProgressBarModule,
-    // Material UI slide toggle
-    MatSlideToggleModule,    
   ],
   providers: [],
   bootstrap: [AppComponent]
