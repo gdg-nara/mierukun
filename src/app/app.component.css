@@ -1,10 +1,16 @@
 .content {
     width: 600px;
-    height: 600px;
+    height: 750px;
 }
 
 #reportBtn{
     display: flex;
     justify-content: center;
-    margin-top: 80px;
+    gap: 10px;
+}
+
+#meetURL{
+    display: flex;
+    justify-content: center;
+    gap: 10px;
 }

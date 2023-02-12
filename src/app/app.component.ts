@@ -8,6 +8,7 @@ import { ClickButtonset } from './components/buttonset/buttonset.component';
 })
 export class AppComponent {
   title = 'mierukun';
+  textValue: string ='';
 
   // app-buttonset コンポーネントへの入力
   // ボタンの文字列の配列
@@ -26,6 +27,13 @@ export class AppComponent {
    */
   public onClickButtonset(event: ClickButtonset): void {
     console.debug(event);
+  }
+
+  // Meet への誘導リンク
+  openPage() {
+    console.log(this.textValue);
+    window.open(this.textValue, '_blank');
+    // https://meet.google.com/tic-rwto-npo
   }
 
 }

@@ -13,9 +13,12 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 // 学習活動を記録するボタンのコンポーネント
 import { ButtonsetComponent } from './components/buttonset/buttonset.component';
 
-// 一般的なボタンモジュール
+// ボタン
 import { MatButtonModule } from '@angular/material/button';
-
+// テキストインプット
+import {MatInputModule} from '@angular/material/input';
+// Forms
+import { FormsModule } from '@angular/forms';
 
 @NgModule({
   declarations: [
@@ -30,7 +33,9 @@ import { MatButtonModule } from '@angular/material/button';
     MatCardModule,
     MatRippleModule,
     MatProgressBarModule,
-    MatButtonModule
+    MatButtonModule,
+    MatInputModule,
+    FormsModule
   ],
   providers: [],
   bootstrap: [AppComponent]

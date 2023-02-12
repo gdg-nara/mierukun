@@ -1,7 +1,15 @@
 <div class="content" role="main">
   <app-buttonset [buttonset]="buttonset" (clickButtonset)="onClickButtonset($event)"></app-buttonset>
 
+  <form id="meetURL">
+    <mat-form-field class="example-full-width">
+      <mat-label>Classroom の Meet URL</mat-label>
+      <input matInput name="textValue" [(ngModel)]="textValue" placeholder="例: https://meet.google.com/tic-rwto-npo" value="" >
+    </mat-form-field>
+  </form>
+
   <div id="reportBtn">
+    <button mat-raised-button (click)="openPage()">授業を録画する</button>    
     <button mat-raised-button>レポートを作成する</button>
   </div>
   
