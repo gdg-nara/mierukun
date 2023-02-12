@@ -26,9 +26,7 @@ export class ButtonsetComponent {
     for (const button of buttonset) {
       this.buttonsetState.set(button, {
         name: button,
-        started: false,
-        startTime: NaN,
-        total: 0
+        started: false
       });
     }
   }
@@ -56,6 +54,9 @@ export class ButtonsetComponent {
    * @param {string} button - クリックされたボタンの名前 
    */
   public onClickButton(event: UIEvent, button: string): void {
+    // 現在時刻
+    const now = Date.now();
+
     // 同時に複数のボタンを有効化できない設定の場合、有効化されたボタンを終了する
     if (!this.multiple) {
       for (const [name, state] of this.buttonsetState) {
@@ -66,14 +67,12 @@ export class ButtonsetComponent {
           this.clickButtonset.emit({
             button: name,
             event: 'END',
-            time: Date.now()
+            time: now
           });
         }
       }
     }
 
-    // 現在時刻
-    const now = Date.now();
     // ボタンの状態管理オブジェクトを取得
     let buttonState: ButtonState | undefined = this.buttonsetState.get(button);
 
@@ -83,15 +82,6 @@ export class ButtonsetComponent {
       // 状態管理オブジェクトがある場合
       // ボタンの状態を反転
       buttonState.started = !buttonState.started;
-
-      // ボタンが有効化した場合
-      if (buttonState.started) {
-        // 現在時刻を開始時刻に設定
-        buttonState.startTime = now;
-      } else {
-        // 開始時刻からの経過時間を合計時間に加算
-        buttonState.total += now - buttonState.startTime;
-      }
 
       this.clickButtonset.emit({
         button: buttonState.name,
@@ -108,8 +98,4 @@ interface ButtonState {
   name: string;
   // ボタンが有効化しているか
   started: boolean;
-  // 有効化した時間 Date.now() の返値
-  startTime: number;
-  // 有効化した合計時間
-  total: number;
 }
