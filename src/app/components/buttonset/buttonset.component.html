@@ -1,6 +1,6 @@
 <mat-grid-list cols="2" rowHeight="2:1">
     <mat-grid-tile *ngFor="let button of buttonset">
-        <mat-card matRipple (click)="onClickButton($event, button)">
+        <mat-card class="button-card" matRipple (click)="onClickButton($event, button)">
             <mat-card-header>
                 <mat-card-title>{{button}}</mat-card-title>
                 <mat-card-subtitle></mat-card-subtitle>
@@ -11,7 +11,7 @@
             </mat-card-actions>
             <mat-card-footer>
                 <mat-progress-bar
-                    [mode]="!buttonsetState[button] ? 'determinate' : buttonsetState[button].started ? 'indeterminate' : 'determinate'"></mat-progress-bar>
+                    [mode]="!buttonsetState.has(button) ? 'determinate' : buttonsetState.get(button)!.started ? 'indeterminate' : 'determinate'"></mat-progress-bar>
             </mat-card-footer>
         </mat-card>
     </mat-grid-tile>
