@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, HostListener } from '@angular/core';
 import { ClickButtonset } from './components/buttonset/buttonset.component';
 
 @Component({
@@ -7,6 +7,11 @@ import { ClickButtonset } from './components/buttonset/buttonset.component';
   styleUrls: ['./app.component.css']
 })
 export class AppComponent {
+  @HostListener('window:blur', ['$event'])
+  onBlur(event: FocusEvent) {
+    event.preventDefault();
+  }
+
   title = 'mierukun';
   textValue: string ='';
 
