@@ -30,9 +30,7 @@ import { MatSlideToggleModule } from '@angular/material/slide-toggle';
     MatRippleModule,
     MatProgressBarModule,
     // Material UI slide toggle
-    MatSlideToggleModule,
-    // ボタンのコンポーネント
-    ButtonsetComponent
+    MatSlideToggleModule,    
   ],
   providers: [],
   bootstrap: [AppComponent]
