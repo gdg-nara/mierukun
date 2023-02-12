@@ -1,11 +1,15 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 
+/** イベント種別 */
 export type ButtonEvent = 'START' | 'END';
 
-// コンポーネント外部に送出するイベントの引数
+/** コンポーネント外部に送出するイベントの引数 */
 export interface ClickButtonset {
+  // ボタンの名前
   button: string;
+  // イベント種別
   event: ButtonEvent;
+  // イベント発生時間 Date.now() の返値
   time: number;
 }
 
@@ -19,23 +23,29 @@ export class ButtonsetComponent {
   // ボタンに表示する文字列の配列
   // ボタンの識別にも使用する
   @Input() buttonset!: Array<string>;
+
   // ボタンを複数同時に有効化できるか
   @Input() multiple!: boolean;
 
   // ボタンが押されたときに発火するイベント
-  @Output() clickButtonset: EventEmitter<ClickButtonset> = new EventEmitter();
+  @Output() clickButtonset = new EventEmitter<ClickButtonset>();
 
   // コンポーネント内部で使用するボタンの状態管理オブジェクト
-  // public buttonsetState: any = {};
   public buttonsetState = new Map<string, ButtonState>();
 
-  // ボタンがクリックされたときに呼び出されるイベントハンドラ
+  /**
+   * ボタンがクリックされたときに呼び出されるイベントハンドラ
+   * @param {UIEvent} event - DOMのイベントオブジェクト
+   * @param {string} button - クリックされたボタンの名前 
+   */
   public onClickButton(event: UIEvent, button: string): void {
     // 同時に複数のボタンを有効化できない設定の場合、有効化されたボタンを終了する
     if (!this.multiple) {
       for (const [name, state] of this.buttonsetState) {
+        // クリックされたボタン以外で開始しているボタンを終了
         if (button !== name && state.started) {
           state.started = false;
+
           this.clickButtonset.emit({
             button: name,
             event: 'END',
@@ -79,9 +89,12 @@ export class ButtonsetComponent {
   }
 }
 
-// 状態管理オブジェクトのインターフェイス
+/** 状態管理オブジェクトのインターフェイス */
 interface ButtonState {
+  // ボタンの名前
   name: string;
+  // ボタンが有効化しているか
   started: boolean;
+  // 有効化した時間 Date.now() の返値
   startTime: number;
 }
