@@ -28,6 +28,19 @@ export class ButtonsetComponent {
 
   // ボタンがクリックされたときに呼び出されるイベントハンドラ
   public onClickButton(event: UIEvent, button: string): void {
+    // 同時に複数のボタンを有効化できない設定の場合、有効化されたボタンを終了する
+    if (!this.multiple) {
+      for (const [name, state] of this.buttonsetState) {
+        if (button !== name) {
+          state.started = false;
+          this.clickButtonset.emit({
+            button: name,
+            time: Date.now()
+          });
+        }
+      }
+    }
+
     // ボタンの状態管理オブジェクトを取得
     let buttonState: ButtonState | undefined = this.buttonsetState.get(button);
 
@@ -56,12 +69,6 @@ export class ButtonsetComponent {
         button: buttonState.name,
         time: Date.now()
       });
-    }
-  }
-
-  private endAllButton() {
-    for (const [name, state] of Object.entries(this.buttonsetState)) {
-      state.started = false;
     }
   }
 }
