@@ -9,7 +9,12 @@ import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+
+// ボタンのコンポーネント
 import { ButtonsetComponent } from './components/buttonset/buttonset.component';
+
+// Material UI slide toggle
+import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 
 @NgModule({
   declarations: [
@@ -24,6 +29,10 @@ import { ButtonsetComponent } from './components/buttonset/buttonset.component';
     MatCardModule,
     MatRippleModule,
     MatProgressBarModule,
+    // Material UI slide toggle
+    MatSlideToggleModule,
+    // ボタンのコンポーネント
+    ButtonsetComponent
   ],
   providers: [],
   bootstrap: [AppComponent]
