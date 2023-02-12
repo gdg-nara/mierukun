@@ -3,4 +3,6 @@
   <mat-slide-toggle>Angular Material トグルコンポーネント</mat-slide-toggle>
 </div>
 
+<app-buttonset [buttonset]="buttonset" (clickButtonset)="onClickButtonset($event)"></app-buttonset>
+
 <router-outlet></router-outlet>
