@@ -18,7 +18,7 @@
                 "inlineCritical": false
               }
             },
-            "outputPath": "dist/mierukun",
+            "outputPath": "extension",
             "index": "src/index.html",
             "main": "src/main.ts",
             "polyfills": [
