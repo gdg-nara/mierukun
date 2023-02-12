@@ -20,9 +20,16 @@ export interface ClickButtonset {
 })
 export class ButtonsetComponent {
 
-  // ボタンに表示する文字列の配列
-  // ボタンの識別にも使用する
-  @Input() buttonset!: Array<string>;
+  // コンポーネント外部から設定されるボタン名のリスト
+  // コンポーネント内部で使用するためにMapに登録する
+  @Input() set buttonset(buttonset: Array<string>) {
+    for (const button of buttonset) {
+      this.buttonsetState.set(button, {
+        name: button,
+        started: false
+      });
+    }
+  }
 
   // ボタンを複数同時に有効化できるか
   @Input() multiple!: boolean;
@@ -34,11 +41,22 @@ export class ButtonsetComponent {
   public buttonsetState = new Map<string, ButtonState>();
 
   /**
+   * ボタンの名前を配列で返す
+   * @returns {Array<string>} ボタンの名前リスト
+   */
+  public get buttonNames(): Array<string> {
+    return Array.from(this.buttonsetState.keys());
+  }
+
+  /**
    * ボタンがクリックされたときに呼び出されるイベントハンドラ
    * @param {UIEvent} event - DOMのイベントオブジェクト
    * @param {string} button - クリックされたボタンの名前 
    */
   public onClickButton(event: UIEvent, button: string): void {
+    // 現在時刻
+    const now = Date.now();
+
     // 同時に複数のボタンを有効化できない設定の場合、有効化されたボタンを終了する
     if (!this.multiple) {
       for (const [name, state] of this.buttonsetState) {
@@ -49,7 +67,7 @@ export class ButtonsetComponent {
           this.clickButtonset.emit({
             button: name,
             event: 'END',
-            time: Date.now()
+            time: now
           });
         }
       }
@@ -59,22 +77,7 @@ export class ButtonsetComponent {
     let buttonState: ButtonState | undefined = this.buttonsetState.get(button);
 
     if (!buttonState) {
-      // 状態管理オブジェクトがない場合
-      // 初回のクリックとして扱う
-      buttonState = {
-        name: button,
-        started: true,
-        startTime: Date.now()
-      };
-
-      this.clickButtonset.emit({
-        button: buttonState.name,
-        event: 'START',
-        time: buttonState.startTime
-      });
-
-      // 状態管理オブジェクトに登録する
-      this.buttonsetState.set(button, buttonState);
+      throw new Error('未登録のボタンがクリックされた');
     } else {
       // 状態管理オブジェクトがある場合
       // ボタンの状態を反転
@@ -83,7 +86,7 @@ export class ButtonsetComponent {
       this.clickButtonset.emit({
         button: buttonState.name,
         event: buttonState.started ? 'START' : 'END',
-        time: Date.now()
+        time: now
       });
     }
   }
@@ -95,6 +98,4 @@ interface ButtonState {
   name: string;
   // ボタンが有効化しているか
   started: boolean;
-  // 有効化した時間 Date.now() の返値
-  startTime: number;
 }
