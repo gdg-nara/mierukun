@@ -11,7 +11,7 @@ import { MatCardModule } from '@angular/material/card';
 import { MatRippleModule } from '@angular/material/core';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 
-import { ButtonsetComponent } from './buttonset.component';
+import { ButtonsetComponent, ClickButtonset } from './buttonset.component';
 
 describe('ButtonsetComponent', () => {
   let component: ButtonsetComponent;
@@ -74,18 +74,28 @@ describe('ButtonsetComponent', () => {
   });
 
   it('should be update internal state', async () => {
+    let clickButtonset: ClickButtonset | undefined;
+    component.clickButtonset.subscribe((event: ClickButtonset) => {
+      clickButtonset = event;
+    });
     for (const name of buttonset) {
       const card = await loader.getHarness(MatCardHarness.with({
         title: name
       }))
       await (await card.host()).click();
+      expect(clickButtonset?.button).toEqual(name);
+      expect(clickButtonset?.event).toEqual('START');
+      expect(clickButtonset?.time).not.toBeNull();
       fixture.detectChanges();
-      expect(component.buttonsetState.get(name)?.started).toBe(true);
+      expect(component.buttonsetState.get(name)?.started).toEqual(true);
       // should be indeterminate mode
       expect(await (await (await card.getChildLoader(MatCardSection.FOOTER)).getHarness(MatProgressBarHarness)).getMode()).toEqual('indeterminate');
       await (await card.host()).click();
+      expect(clickButtonset?.button).toEqual(name);
+      expect(clickButtonset?.event).toEqual('END');
+      expect(clickButtonset?.time).not.toBeNull();
       fixture.detectChanges();
-      expect(component.buttonsetState.get(name)?.started).toBe(false);
+      expect(component.buttonsetState.get(name)?.started).toEqual(false);
       // should be determinate mode
       expect(await (await (await card.getChildLoader(MatCardSection.FOOTER)).getHarness(MatProgressBarHarness)).getMode()).toEqual('determinate');
     }
