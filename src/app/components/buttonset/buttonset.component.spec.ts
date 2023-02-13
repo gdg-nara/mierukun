@@ -85,7 +85,7 @@ describe('ButtonsetComponent', () => {
       await (await card.host()).click();
       expect(clickButtonset?.button).toEqual(name);
       expect(clickButtonset?.event).toEqual('START');
-      expect(clickButtonset?.time).not.toBeNull();
+      expect(clickButtonset?.time).not.toBeNaN();
       fixture.detectChanges();
       expect(component.buttonsetState.get(name)?.started).toEqual(true);
       // should be indeterminate mode
@@ -93,7 +93,7 @@ describe('ButtonsetComponent', () => {
       await (await card.host()).click();
       expect(clickButtonset?.button).toEqual(name);
       expect(clickButtonset?.event).toEqual('END');
-      expect(clickButtonset?.time).not.toBeNull();
+      expect(clickButtonset?.time).not.toBeNaN();
       fixture.detectChanges();
       expect(component.buttonsetState.get(name)?.started).toEqual(false);
       // should be determinate mode
