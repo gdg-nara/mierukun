@@ -11,7 +11,7 @@
             </mat-card-actions>
             <mat-card-footer>
                 <mat-progress-bar
-                    [mode]="buttonsetState.get(button)!.started ? 'indeterminate' : 'determinate'"></mat-progress-bar>
+                    [mode]="buttonsetState.get(button)?.started ? 'indeterminate' : 'determinate'"></mat-progress-bar>
             </mat-card-footer>
         </mat-card>
     </mat-grid-tile>
