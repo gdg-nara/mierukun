@@ -44,6 +44,7 @@ describe('ButtonsetComponent', () => {
     'bbb',
     'ccc'
   ];
+
   beforeEach(async () => {
     component.multiple = true;
     component.buttonset = buttonset;
@@ -67,7 +68,7 @@ describe('ButtonsetComponent', () => {
     for (const name of buttonset) {
       const card = await loader.getHarness(MatCardHarness.with({
         title: name
-      }))
+      }));
       expect(card).toBeTruthy();
       expect(await card.getTitleText()).toEqual(name);
     }
@@ -81,7 +82,7 @@ describe('ButtonsetComponent', () => {
     for (const name of buttonset) {
       const card = await loader.getHarness(MatCardHarness.with({
         title: name
-      }))
+      }));
       await (await card.host()).click();
       expect(clickButtonset?.button).toEqual(name);
       expect(clickButtonset?.event).toEqual('START');
@@ -99,5 +100,48 @@ describe('ButtonsetComponent', () => {
       // should be determinate mode
       expect(await (await (await card.getChildLoader(MatCardSection.FOOTER)).getHarness(MatProgressBarHarness)).getMode()).toEqual('determinate');
     }
+  });
+
+  it('ボタンを複数選択できない設定の動作確認', async () => {
+    component.multiple = false;
+    fixture.detectChanges();
+    expect(component.multiple).toEqual(false);
+
+    let clickButtonset = new Array<ClickButtonset>();
+    component.clickButtonset.subscribe((event: ClickButtonset) => {
+      clickButtonset.push(event);
+    });
+
+    let card = await loader.getHarness(MatCardHarness.with({
+      title: buttonset[0]
+    }));
+    await (await card.host()).click();
+    expect(clickButtonset[0]?.button).toEqual(buttonset[0]);
+    expect(clickButtonset[0]?.event).toEqual('START');
+    expect(clickButtonset[0]?.time).not.toBeNaN();
+    fixture.detectChanges();
+    expect(component.buttonsetState.get(buttonset[0])?.started).toEqual(true);
+    // should be indeterminate mode
+    expect(await (await (await card.getChildLoader(MatCardSection.FOOTER)).getHarness(MatProgressBarHarness)).getMode()).toEqual('indeterminate');
+
+    card = await loader.getHarness(MatCardHarness.with({
+      title: buttonset[1]
+    }));
+    await (await card.host()).click();
+    expect(clickButtonset[1]?.button).toEqual(buttonset[0]);
+    expect(clickButtonset[1]?.event).toEqual('END');
+    expect(clickButtonset[1]?.time).not.toBeNaN();
+    expect(clickButtonset[2]?.button).toEqual(buttonset[1]);
+    expect(clickButtonset[2]?.event).toEqual('START');
+    expect(clickButtonset[2]?.time).not.toBeNaN();
+    fixture.detectChanges();
+    expect(component.buttonsetState.get(buttonset[0])?.started).toEqual(false);
+    expect(component.buttonsetState.get(buttonset[1])?.started).toEqual(true);
+    // should be indeterminate mode
+    expect(await (await (await card.getChildLoader(MatCardSection.FOOTER)).getHarness(MatProgressBarHarness)).getMode()).toEqual('indeterminate');
+    card = await loader.getHarness(MatCardHarness.with({
+      title: buttonset[0]
+    }));
+    expect(await (await (await card.getChildLoader(MatCardSection.FOOTER)).getHarness(MatProgressBarHarness)).getMode()).toEqual('determinate');
   });
 });
