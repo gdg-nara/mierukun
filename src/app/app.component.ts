@@ -1,5 +1,6 @@
 import { Component, HostListener } from '@angular/core';
 import { ClickButtonset } from './components/buttonset/buttonset.component';
+import { RecorderService } from './services/recorder.service';
 
 @Component({
   selector: 'app-root',
@@ -7,6 +8,10 @@ import { ClickButtonset } from './components/buttonset/buttonset.component';
   styleUrls: ['./app.component.css']
 })
 export class AppComponent {
+  constructor(
+    private recorder: RecorderService
+  ) { }
+
   @HostListener('window:blur', ['$event'])
   onBlur(event: FocusEvent) {
     event.preventDefault();
@@ -32,6 +37,7 @@ export class AppComponent {
    */
   public onClickButtonset(event: ClickButtonset): void {
     console.debug(event);
+    this.recorder.record(event);
   }
 
   // Meet への誘導リンク
@@ -41,4 +47,10 @@ export class AppComponent {
     // https://meet.google.com/tic-rwto-npo
   }
 
+  createReport() {
+    const link = document.createElement('a');
+    link.download = new Date().toTimeString();
+    link.href = this.recorder.export2csv();
+    link.click();
+  }
 }
