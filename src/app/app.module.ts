@@ -5,6 +5,10 @@ import { MatGridListModule } from '@angular/material/grid-list';
 import { MatCardModule } from '@angular/material/card';
 import { MatRippleModule } from '@angular/material/core';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
+import { MatSidenavModule } from '@angular/material/sidenav';
+import { MatToolbarModule } from '@angular/material/toolbar';
+import { MatIconModule } from '@angular/material/icon';
+import { MatTabsModule } from '@angular/material/tabs';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -33,6 +37,10 @@ import { FormsModule } from '@angular/forms';
     MatCardModule,
     MatRippleModule,
     MatProgressBarModule,
+    MatSidenavModule,
+    MatToolbarModule,
+    MatIconModule,
+    MatTabsModule,
     MatButtonModule,
     MatInputModule,
     FormsModule

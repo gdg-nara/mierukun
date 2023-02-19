@@ -14,3 +14,11 @@
     justify-content: center;
     gap: 10px;
 }
+
+.tab-icon {
+    margin-right: 8px;
+}
+
+.spacer {
+    flex: 1 1 auto;
+}

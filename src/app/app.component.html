@@ -1,18 +1,62 @@
-<div class="content" role="main">
-  <app-buttonset [buttonset]="buttonset" (clickButtonset)="onClickButtonset($event)" [multiple]="false"></app-buttonset>
+<mat-toolbar color="primary">
+  <mat-toolbar-row>
+    <span>みえるもん</span>
+  </mat-toolbar-row>
+</mat-toolbar>
 
-  <form id="meetURL">
-    <mat-form-field class="example-full-width">
-      <mat-label>Classroom の Meet URL</mat-label>
-      <input matInput name="textValue" [(ngModel)]="textValue" placeholder="例: https://meet.google.com/tic-rwto-npo" value="" >
-    </mat-form-field>
-  </form>
+<mat-sidenav-container>
+  <mat-sidenav>
+  </mat-sidenav>
 
-  <div id="reportBtn">
-    <button mat-raised-button (click)="openPage()">授業を録画する</button>    
-    <button mat-raised-button (click)="createReport()">レポートを作成する</button>
-  </div>
-  
-</div>
+  <mat-sidenav-content>
+    <mat-tab-group>
+      <mat-tab>
+        <ng-template mat-tab-label>
+          <mat-icon class="tab-icon">tune</mat-icon>
+          <span>First</span>
+        </ng-template>
+        <ng-template matTabContent>
+
+          <p>TODO:ここにボタン登録のためのコンポーネントを追加する</p>
+
+        </ng-template>
+      </mat-tab>
+
+      <mat-tab>
+        <ng-template mat-tab-label>
+          <mat-icon class="tab-icon">school</mat-icon>
+          <span>Second</span>
+        </ng-template>
+        <ng-template matTabContent>
+          <div class="content" role="main">
+            <app-buttonset [buttonset]="buttonset" (clickButtonset)="onClickButtonset($event)"
+              [multiple]="false"></app-buttonset>
+
+            <form id="meetURL">
+              <mat-form-field class="example-full-width">
+                <mat-label>Classroom の Meet URL</mat-label>
+                <input matInput name="textValue" [(ngModel)]="textValue"
+                  placeholder="例: https://meet.google.com/tic-rwto-npo" value="">
+              </mat-form-field>
+              <button mat-raised-button (click)="openPage()">授業を録画する</button>
+            </form>
+          </div>
+        </ng-template>
+      </mat-tab>
+
+      <mat-tab>
+        <ng-template mat-tab-label>
+          <mat-icon class="tab-icon">analytics</mat-icon>
+          <span>Third</span>
+        </ng-template>
+        <ng-template matTabContent>
+          <div id="reportBtn">
+            <button mat-raised-button (click)="createReport()">レポートを作成する</button>
+          </div>
+        </ng-template>
+      </mat-tab>
+    </mat-tab-group>
+  </mat-sidenav-content>
+</mat-sidenav-container>
 
 <router-outlet></router-outlet>
