@@ -60,11 +60,11 @@ export class RecorderService {
   /**
    * getTotal
    */
-  public getTotal(kind: string): number | undefined {
+  public getTotal(kind: string): number {
     if (!this.total.has(kind)) {
       console.error(`${kind} は登録されていません`);
     }
-    return this.total.get(kind)?.time;
+    return this.total.get(kind)?.time || 0;
   }
 
   /**
