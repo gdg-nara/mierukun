@@ -27,21 +27,21 @@
           <mat-icon class="tab-icon">school</mat-icon>
           <span>Second</span>
         </ng-template>
-        <ng-template matTabContent>
-          <div class="content" role="main">
-            <app-buttonset [buttonset]="buttonset" (clickButtonset)="onClickButtonset($event)"
-              [multiple]="false"></app-buttonset>
+        <!-- <ng-template matTabContent> -->
+        <div class="content" role="main">
+          <app-buttonset [buttonset]="buttonset" (clickButtonset)="onClickButtonset($event)"
+            [multiple]="false"></app-buttonset>
 
-            <form id="meetURL">
-              <mat-form-field class="example-full-width">
-                <mat-label>Classroom の Meet URL</mat-label>
-                <input matInput name="textValue" [(ngModel)]="textValue"
-                  placeholder="例: https://meet.google.com/tic-rwto-npo" value="">
-              </mat-form-field>
-              <button mat-raised-button (click)="openPage()">授業を録画する</button>
-            </form>
-          </div>
-        </ng-template>
+          <form id="meetURL">
+            <mat-form-field class="example-full-width">
+              <mat-label>Classroom の Meet URL</mat-label>
+              <input matInput name="textValue" [(ngModel)]="textValue"
+                placeholder="例: https://meet.google.com/tic-rwto-npo" value="">
+            </mat-form-field>
+            <button mat-raised-button (click)="openPage()">授業を録画する</button>
+          </form>
+        </div>
+        <!-- </ng-template> -->
       </mat-tab>
 
       <mat-tab>
@@ -50,6 +50,9 @@
           <span>Third</span>
         </ng-template>
         <ng-template matTabContent>
+
+          <app-kokuban-chart></app-kokuban-chart>
+
           <div id="reportBtn">
             <button mat-raised-button (click)="createReport()">レポートを作成する</button>
           </div>

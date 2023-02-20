@@ -21,17 +21,20 @@ import { ButtonsetComponent } from './components/buttonset/buttonset.component';
 // ボタン
 import { MatButtonModule } from '@angular/material/button';
 // テキストインプット
-import {MatInputModule} from '@angular/material/input';
+import { MatInputModule } from '@angular/material/input';
 // Forms
 import { FormsModule } from '@angular/forms';
 // ユーザの入力に応じて追加入力が可能なテキストインプットコンポーネント
 import { InputmoreComponent } from './components/inputmore/inputmore.component';
+// 黒板面積グラフを表示するためのコンポーネント
+import { KokubanChartComponent } from './components/kokuban-chart/kokuban-chart.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     ButtonsetComponent,
-    InputmoreComponent
+    InputmoreComponent,
+    KokubanChartComponent
   ],
   imports: [
     BrowserModule,
