@@ -18,7 +18,7 @@ export class AppComponent {
   }
 
   title = 'mierukun';
-  textValue: string ='';
+  textValue: string = '';
 
   // app-buttonset コンポーネントへの入力
   // ボタンの文字列の配列
@@ -37,7 +37,11 @@ export class AppComponent {
    */
   public onClickButtonset(event: ClickButtonset): void {
     console.debug(event);
-    this.recorder.record(event);
+    this.recorder.record({
+      kind: event.button,
+      event: event.event,
+      time: event.time
+    });
   }
 
   // Meet への誘導リンク
@@ -48,9 +52,14 @@ export class AppComponent {
   }
 
   createReport() {
-    const link = document.createElement('a');
-    link.download = new Date().toTimeString();
-    link.href = this.recorder.export2csv();
-    link.click();
+    const url = this.recorder.export2csv();
+    if (!url) {
+      console.warn('出力すべきデータがありません。');
+    } else {
+      const link = document.createElement('a');
+      link.download = new Date().toTimeString();
+      link.href = url.href;
+      link.click();
+    }
   }
 }
