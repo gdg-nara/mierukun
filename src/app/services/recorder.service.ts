@@ -68,6 +68,17 @@ export class RecorderService {
   }
 
   /**
+   * getAllTotal
+   */
+  public getAllTotal(): Map<string, { time: number }> {
+    const all = new Map<string, { time: number }>();
+    for (const [kind, total] of this.total) {
+      all.set(kind, { time: total.time });
+    }
+    return all;
+  }
+
+  /**
    * export2csv
    */
   public export2csv(): URL | undefined {
