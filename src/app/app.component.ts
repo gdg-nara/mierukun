@@ -1,5 +1,6 @@
-import { Component, HostListener } from '@angular/core';
+import { Component, HostListener, OnInit } from '@angular/core';
 import { ClickButtonset } from './components/buttonset/buttonset.component';
+import { TreeDataColumn, TreeDataRow } from './components/kokuban-chart/kokuban-chart.component';
 import { RecorderService } from './services/recorder.service';
 
 @Component({
@@ -7,7 +8,7 @@ import { RecorderService } from './services/recorder.service';
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css']
 })
-export class AppComponent {
+export class AppComponent implements OnInit {
   constructor(
     private recorder: RecorderService
   ) { }
@@ -19,6 +20,12 @@ export class AppComponent {
 
   title = 'mierukun';
   textValue: string = '';
+
+  header!: TreeDataColumn[];
+  body!: TreeDataRow[];
+
+  ngOnInit() {
+  }
 
   // app-buttonset コンポーネントへの入力
   // ボタンの文字列の配列
@@ -42,6 +49,12 @@ export class AppComponent {
       event: event.event,
       time: event.time
     });
+
+    const total = this.recorder.getTotal(event.button) || 0;
+    this.body = [{
+      label: event.button,
+      num: total
+    }];
   }
 
   // Meet への誘導リンク

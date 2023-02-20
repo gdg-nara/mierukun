@@ -51,7 +51,7 @@
         </ng-template>
         <ng-template matTabContent>
 
-          <app-kokuban-chart></app-kokuban-chart>
+          <app-kokuban-chart [rows]="body"></app-kokuban-chart>
 
           <div id="reportBtn">
             <button mat-raised-button (click)="createReport()">レポートを作成する</button>
