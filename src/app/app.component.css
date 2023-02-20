@@ -3,13 +3,13 @@
     height: 750px;
 }
 
-#reportBtn{
+#reportBtn {
     display: flex;
     justify-content: center;
     gap: 10px;
 }
 
-#meetURL{
+#meetURL {
     display: flex;
     justify-content: center;
     gap: 10px;
