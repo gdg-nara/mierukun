@@ -1,14 +1,14 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 
-/** イベント種別 */
-export type ButtonEvent = 'START' | 'END';
+import { Event } from '../../services/recorder.service';
+
 
 /** コンポーネント外部に送出するイベントの引数 */
 export interface ClickButtonset {
   // ボタンの名前
   button: string;
   // イベント種別
-  event: ButtonEvent;
+  event: Event;
   // イベント発生時間 Date.now() の返値
   time: number;
 }
