@@ -9,7 +9,7 @@
   </mat-sidenav>
 
   <mat-sidenav-content>
-    <mat-tab-group>
+    <mat-tab-group dynamicHeight>
       <mat-tab>
         <ng-template mat-tab-label>
           <mat-icon class="tab-icon">tune</mat-icon>
@@ -51,7 +51,7 @@
         </ng-template>
         <ng-template matTabContent>
 
-          <app-kokuban-chart [rows]="body"></app-kokuban-chart>
+          <app-kokuban-chart [data]="treeData"></app-kokuban-chart>
 
           <div id="reportBtn">
             <button mat-raised-button (click)="createReport()">レポートを作成する</button>

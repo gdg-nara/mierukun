@@ -2,21 +2,6 @@ import { Component, Input, OnInit } from '@angular/core';
 
 declare const google: any;
 
-interface TreeDataTable {
-  columns: Array<TreeDataColumn>;
-  rows: Array<TreeDataRow>;
-}
-
-export interface TreeDataColumn {
-  type: string;
-  label: string;
-}
-
-export interface TreeDataRow {
-  label: string;
-  num: number;
-}
-
 @Component({
   selector: 'app-kokuban-chart',
   templateUrl: './kokuban-chart.component.html',
@@ -24,17 +9,12 @@ export interface TreeDataRow {
 })
 export class KokubanChartComponent implements OnInit {
 
-  private treeDataTable: TreeDataTable = {
-    columns: new Array<TreeDataColumn>(),
-    rows: new Array<TreeDataRow>()
-  };
+  private treeDataTable = new Map<string, number>();
 
-  @Input() set columns(cols: Array<TreeDataColumn>) {
-    this.treeDataTable.columns = cols;
-  }
-
-  @Input() set rows(rows: Array<TreeDataRow>) {
-    this.treeDataTable.rows = rows;
+  @Input() set data(data: Map<string, number>) {
+    if (data) {
+      this.treeDataTable = data;
+    }
   }
 
   ngOnInit(): void {
@@ -49,38 +29,44 @@ export class KokubanChartComponent implements OnInit {
     }
   }
 
-  drawChart() {
-    let color = 0;
-    const dataArray: Array<any> = [
-      ['kind', '授業', 'time', 'color']
-    ];
-    dataArray.push([
-      'Global',
-      null,
-      0,
-      color++
-    ]);
-    for (const row of this.treeDataTable.rows) {
-      dataArray.push([
-        row.label,
-        'Global',
-        row.num,
-        color++
-      ]);
+  private drawChart(): void {
+    if (this.treeDataTable.size > 0) {
+      let color = Math.random();
+      const dataArray: Array<any> = [
+        ['Kind', 'Parent', 'Time', 'Color'],
+        ['root', null, NaN, NaN]
+      ];
+      for (const [label, value] of this.treeDataTable) {
+        dataArray.push([label, 'root', value, color++]);
+      }
+      const dataTable = new google.visualization.arrayToDataTable(dataArray);
+      const tree = new google.visualization.TreeMap(document.getElementById('chart-aria'));
+
+      tree.draw(dataTable, {
+        enableHighlight: true,
+        maxDepth: 1,
+        maxPostDepth: 1,
+        minHighlightColor: '#8c6bb1',
+        midHighlightColor: '#9ebcda',
+        maxHighlightColor: '#edf8fb',
+        minColor: '#009688',
+        midColor: '#f7f7f7',
+        maxColor: '#ee8100',
+        headerHeight: 0,
+        showScale: false,
+        // height: 500,
+        useWeightedAverageForAggregation: true,
+        // Use click to highlight and double-click to drill down.
+        eventsConfig: {
+          highlight: ['click'],
+          unhighlight: ['mouseout'],
+          rollup: ['contextmenu'],
+          drilldown: ['dblclick'],
+        },
+        generateTooltip: (row: any, size: any, value: any) => {
+          return '';
+        }
+      });
     }
-    console.log(dataArray);
-
-    const dataTable = new google.visualization.arrayToDataTable(dataArray);
-
-    const tree = new google.visualization.TreeMap(document.getElementById('chart-aria'));
-
-    tree.draw(dataTable, {
-      minColor: '#f00',
-      midColor: '#ddd',
-      maxColor: '#00f',
-      headerHeight: 15,
-      fontColor: 'black',
-      showScale: true
-    });
   }
 }

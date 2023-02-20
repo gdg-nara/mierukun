@@ -1,6 +1,5 @@
-import { Component, HostListener, OnInit } from '@angular/core';
+import { Component, HostListener } from '@angular/core';
 import { ClickButtonset } from './components/buttonset/buttonset.component';
-import { TreeDataColumn, TreeDataRow } from './components/kokuban-chart/kokuban-chart.component';
 import { RecorderService } from './services/recorder.service';
 
 @Component({
@@ -8,7 +7,7 @@ import { RecorderService } from './services/recorder.service';
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css']
 })
-export class AppComponent implements OnInit {
+export class AppComponent {
   constructor(
     private recorder: RecorderService
   ) { }
@@ -21,11 +20,7 @@ export class AppComponent implements OnInit {
   title = 'mierukun';
   textValue: string = '';
 
-  header!: TreeDataColumn[];
-  body!: TreeDataRow[];
-
-  ngOnInit() {
-  }
+  treeData!: Map<string, number>;
 
   // app-buttonset コンポーネントへの入力
   // ボタンの文字列の配列
@@ -40,7 +35,7 @@ export class AppComponent implements OnInit {
 
   /**
    * ボタンがクリックされたときに呼び出されるイベントハンドラ 
-   * @param event: ClickButtonset クリックされたボタンの情報
+   * @param {ClickButtonset } event - クリックされたボタンの情報
    */
   public onClickButtonset(event: ClickButtonset): void {
     console.debug(event);
@@ -50,11 +45,8 @@ export class AppComponent implements OnInit {
       time: event.time
     });
 
-    const total = this.recorder.getTotal(event.button) || 0;
-    this.body = [{
-      label: event.button,
-      num: total
-    }];
+    const total = this.recorder.getAllTotal();
+    this.updateTreeData(total);
   }
 
   // Meet への誘導リンク
@@ -74,5 +66,13 @@ export class AppComponent implements OnInit {
       link.href = url.href;
       link.click();
     }
+  }
+
+  private updateTreeData(data: Map<string, { time: number }>): void {
+    const total = new Map<string, number>();
+    for (const [key, value] of data) {
+      total.set(key, value.time);
+    }
+    this.treeData = total;
   }
 }
