@@ -27,7 +27,7 @@
           <mat-icon class="tab-icon">school</mat-icon>
           <span>Second</span>
         </ng-template>
-        <!-- <ng-template matTabContent> -->
+        <ng-template matTabContent>
         <div class="content" role="main">
           <app-buttonset [buttonset]="buttonset" (clickButtonset)="onClickButtonset($event)"
             [multiple]="false"></app-buttonset>
@@ -41,7 +41,7 @@
             <button mat-raised-button (click)="openPage()">授業を録画する</button>
           </form>
         </div>
-        <!-- </ng-template> -->
+        </ng-template>
       </mat-tab>
 
       <mat-tab>

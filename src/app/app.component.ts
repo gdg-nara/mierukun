@@ -1,4 +1,4 @@
-import { Component, HostListener } from '@angular/core';
+import { Component, HostListener, ViewChild } from '@angular/core';
 import { ClickButtonset } from './components/buttonset/buttonset.component';
 import { RecorderService } from './services/recorder.service';
 

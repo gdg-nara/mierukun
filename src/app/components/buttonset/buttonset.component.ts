@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { AfterContentChecked, AfterViewChecked, AfterViewInit, Component, EventEmitter, Input, OnDestroy, Output } from '@angular/core';
 
 import { Event } from '../../services/recorder.service';
 
@@ -18,8 +18,7 @@ export interface ClickButtonset {
   templateUrl: './buttonset.component.html',
   styleUrls: ['./buttonset.component.css']
 })
-export class ButtonsetComponent {
-
+export class ButtonsetComponent implements OnDestroy {
   // コンポーネント外部から設定されるボタン名のリスト
   // コンポーネント内部で使用するためにMapに登録する
   @Input() set buttonset(buttonset: Array<string>) {
@@ -39,6 +38,22 @@ export class ButtonsetComponent {
 
   // コンポーネント内部で使用するボタンの状態管理オブジェクト
   public buttonsetState = new Map<string, ButtonState>();
+
+
+  ngOnDestroy(): void {
+    const now = Date.now();
+    for (const [name, state] of this.buttonsetState) {
+      if (state.started) {
+        state.started = false;
+
+        this.clickButtonset.emit({
+          button: name,
+          event: 'END',
+          time: now
+        });
+      }
+    }
+  }
 
   /**
    * ボタンの名前を配列で返す
