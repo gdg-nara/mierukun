@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, HostListener, Input, OnInit } from '@angular/core';
 
 declare const google: any;
 
@@ -68,5 +68,11 @@ export class KokubanChartComponent implements OnInit {
         }
       });
     }
+  }
+
+  // window.resize イベントでグラフを再描画する
+  @HostListener('window:resize', ['$event'])
+  onWindowResize(event: UIEvent) {
+    this.drawChart();
   }
 }
