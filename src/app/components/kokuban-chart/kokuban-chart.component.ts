@@ -9,7 +9,7 @@ declare const google: any;
 })
 export class KokubanChartComponent implements OnInit {
   private readonly chartaria = 'chart-aria';
-  private dataTable!: Map<string, number>;
+  private dataTable = new Map<string, number>();
   private treeDataTable: any;
   private treeMap: any;
   private treeMapOptions = {
