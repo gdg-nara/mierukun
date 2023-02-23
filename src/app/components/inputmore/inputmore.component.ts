@@ -11,10 +11,8 @@ export class InputmoreComponent {
   @Input() label!: string;
   @Input() placeholder!: string;
 
-  @Input() names = new Array<string>();
+  @Input() names!: Array<string>;
   @Output() namesChange = new EventEmitter<string[]>();
-
-  constructor() { }
 
   readonly addOnBlur: boolean = true;
   readonly separatorKeysCodes = [ENTER, COMMA] as const;
@@ -23,6 +21,7 @@ export class InputmoreComponent {
     const value = (event.value || '').trim();
     if (value) {
       this.names.push(value);
+      this.namesChange.emit(Array.from(this.names));
     }
     event.chipInput!.clear();
   }
@@ -31,6 +30,7 @@ export class InputmoreComponent {
     const index = this.names.indexOf(name);
     if (index !== -1) {
       this.names.splice(index, 1);
+      this.namesChange.emit(Array.from(this.names));
     }
   }
 
@@ -42,6 +42,7 @@ export class InputmoreComponent {
       const index = this.names.indexOf(name);
       if (index !== -1) {
         this.names[index] = value;
+        this.namesChange.emit(Array.from(this.names));
       }
     }
   }
