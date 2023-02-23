@@ -15,9 +15,11 @@
           <mat-icon class="tab-icon">tune</mat-icon>
           <span>First</span>
         </ng-template>
-        <div class="content-container">
-          <app-inputmore label="ボタンの名前" placeholder="例: グループ活動" [(names)]="buttonset"></app-inputmore>
-        </div>
+        <ng-template matTabContent>
+          <div class="content-container">
+            <app-inputmore label="ボタンの名前" placeholder="例: グループ活動" [(names)]="buttonset"></app-inputmore>
+          </div>
+        </ng-template>
       </mat-tab>
 
       <mat-tab>
@@ -45,13 +47,16 @@
           <mat-icon class="tab-icon">analytics</mat-icon>
           <span>Third</span>
         </ng-template>
-        <div class="content-container">
-          <app-kokuban-chart [data]="treeData"></app-kokuban-chart>
+        <ng-template matTabContent>
 
-          <div id="reportBtn">
-            <button mat-raised-button (click)="createReport()">レポートを作成する</button>
+          <div class="content-container">
+            <app-kokuban-chart [data]="treeData"></app-kokuban-chart>
+
+            <div id="reportBtn">
+              <button mat-raised-button (click)="createReport()">レポートを作成する</button>
+            </div>
           </div>
-        </div>
+        </ng-template>
       </mat-tab>
     </mat-tab-group>
   </mat-sidenav-content>

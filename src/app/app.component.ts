@@ -1,4 +1,4 @@
-import { Component, HostListener, ViewChild } from '@angular/core';
+import { Component } from '@angular/core';
 import { ClickButtonset } from './components/buttonset/buttonset.component';
 import { RecorderService } from './services/recorder.service';
 
@@ -12,15 +12,10 @@ export class AppComponent {
     private recorder: RecorderService
   ) { }
 
-  @HostListener('window:blur', ['$event'])
-  onBlur(event: FocusEvent) {
-    event.preventDefault();
-  }
-
   title = 'mierukun';
   textValue: string = '';
 
-  treeData!: Map<string, number>;
+  treeData = new Map<string, number>();
 
   // app-buttonset コンポーネントへの入力
   // ボタンの文字列の配列
@@ -45,8 +40,8 @@ export class AppComponent {
       time: event.time
     });
 
-    const total = this.recorder.getAllTotal();
-    this.updateTreeData(total);
+    const total = this.recorder.getTotal(event.button);
+    this.treeData.set(event.button, total);
   }
 
   // Meet への誘導リンク
@@ -59,20 +54,12 @@ export class AppComponent {
   createReport() {
     const url = this.recorder.export2csv();
     if (!url) {
-      console.warn('出力すべきデータがありません。');
+      console.warn('出力するデータがありません。');
     } else {
       const link = document.createElement('a');
       link.download = new Date().toTimeString();
       link.href = url.href;
       link.click();
     }
-  }
-
-  private updateTreeData(data: Map<string, { time: number }>): void {
-    const total = new Map<string, number>();
-    for (const [key, value] of data) {
-      total.set(key, value.time);
-    }
-    this.treeData = total;
   }
 }
