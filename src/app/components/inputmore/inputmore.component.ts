@@ -21,8 +21,12 @@ export class InputmoreComponent {
   add(event: MatChipInputEvent): void {
     const value = (event.value || '').trim();
     if (value) {
-      this.names.push(value);
-      this.namesChange.emit(Array.from(this.names));
+      if (!this.names.includes(value)) {
+        this.names.push(value);
+        this.namesChange.emit(Array.from(this.names));
+      } else {
+        console.info(`${value} はすでに登録されています。`);
+      }
     }
     event.chipInput!.clear();
   }
