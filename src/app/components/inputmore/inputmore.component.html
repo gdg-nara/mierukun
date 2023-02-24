@@ -1,15 +1,15 @@
 <mat-form-field class="chip-list" appearance="fill">
     <mat-label>{{label}}</mat-label>
-    <mat-chip-grid #chipGrid>
-        <mat-chip-row *ngFor="let name of names" (removed)="remove(name)" [editable]="true"
+    <mat-chip-grid #chipGrid cdkDropList [cdkDropListAutoScrollDisabled]="true" cdkDropListOrientation="vertical"
+        (cdkDropListDropped)="drop($event)">
+        <mat-chip-row class="chip-row" cdkDrag *ngFor="let name of names" (removed)="remove(name)" [editable]="true"
             (edited)="edit(name, $event)">
             <span>{{name}}</span>
             <button matChipRemove>
                 <mat-icon>cancel</mat-icon>
             </button>
         </mat-chip-row>
-        <input [placeholder]="placeholder" [matChipInputFor]="chipGrid"
-            [matChipInputSeparatorKeyCodes]="separatorKeysCodes" [matChipInputAddOnBlur]="addOnBlur"
-            (matChipInputTokenEnd)="add($event)" />
     </mat-chip-grid>
+    <input [placeholder]="placeholder" [matChipInputFor]="chipGrid" [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+        [matChipInputAddOnBlur]="addOnBlur" (matChipInputTokenEnd)="add($event)" />
 </mat-form-field>
