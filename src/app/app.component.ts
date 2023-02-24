@@ -44,13 +44,6 @@ export class AppComponent {
     this.treeData.set(event.button, total);
   }
 
-  // Meet への誘導リンク
-  openPage() {
-    console.log(this.textValue);
-    window.open(this.textValue, '_blank');
-    // https://meet.google.com/tic-rwto-npo
-  }
-
   createReport() {
     const url = this.recorder.export2csv();
     if (!url) {
