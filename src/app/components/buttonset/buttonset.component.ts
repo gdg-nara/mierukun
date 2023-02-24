@@ -22,6 +22,7 @@ export class ButtonsetComponent implements OnDestroy {
   // コンポーネント外部から設定されるボタン名のリスト
   // コンポーネント内部で使用するためにMapに登録する
   @Input() set buttonset(buttonset: Array<string>) {
+    this.buttonsetState.clear();
     for (const button of buttonset) {
       this.buttonsetState.set(button, {
         name: button,
