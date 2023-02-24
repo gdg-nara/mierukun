@@ -1,6 +1,7 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { COMMA, ENTER } from '@angular/cdk/keycodes';
 import { MatChipEditedEvent, MatChipInputEvent } from '@angular/material/chips';
+import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
 
 @Component({
   selector: 'app-inputmore',
@@ -45,5 +46,10 @@ export class InputmoreComponent {
         this.namesChange.emit(Array.from(this.names));
       }
     }
+  }
+
+  drop(event: CdkDragDrop<string[]>): void {
+    moveItemInArray(this.names, event.previousIndex, event.currentIndex);
+    this.namesChange.emit(Array.from(this.names));
   }
 }
