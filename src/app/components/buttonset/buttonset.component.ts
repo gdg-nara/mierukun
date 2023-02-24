@@ -22,13 +22,24 @@ export class ButtonsetComponent implements OnDestroy {
   // コンポーネント外部から設定されるボタン名のリスト
   // コンポーネント内部で使用するためにMapに登録する
   @Input() set buttonset(buttonset: Array<string>) {
-    this.buttonsetState.clear();
-    for (const button of buttonset) {
-      this.buttonsetState.set(button, {
-        name: button,
-        started: false
-      });
+    const keys = this.buttonsetState.keys();
+    for (const key of keys) {
+      if (!buttonset.includes(key)) {
+        this.buttonsetState.delete(key);
+      }
     }
+    const map = new Map<string, ButtonState>();
+    for (const button of buttonset) {
+      let state = this.buttonsetState.get(button);
+      if (!state) {
+        state = {
+          name: button,
+          started: false
+        };
+      }
+      map.set(button, state);
+    }
+    this.buttonsetState = map;
   }
 
   // ボタンを複数同時に有効化できるか
