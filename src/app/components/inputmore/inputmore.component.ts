@@ -50,5 +50,6 @@ export class InputmoreComponent {
 
   drop(event: CdkDragDrop<string[]>): void {
     moveItemInArray(this.names, event.previousIndex, event.currentIndex);
+    this.namesChange.emit(Array.from(this.names));
   }
 }
