@@ -46,8 +46,12 @@ export class InputmoreComponent {
     } else {
       const index = this.names.indexOf(name);
       if (index !== -1) {
-        this.names[index] = value;
-        this.namesChange.emit(Array.from(this.names));
+        if (!this.names.includes(value)) {
+          this.names[index] = value;
+          this.namesChange.emit(Array.from(this.names));
+        } else {
+          console.info(`${value} はすでに登録されています。`);
+        }
       }
     }
   }
