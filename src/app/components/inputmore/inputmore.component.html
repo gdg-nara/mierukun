@@ -8,6 +8,11 @@
             <button matChipRemove>
                 <mat-icon>cancel</mat-icon>
             </button>
+            <mat-chip *cdkDragPreview>
+                <span>{{name}}</span>
+            </mat-chip>
+            <mat-chip class="placeholder" *cdkDragPlaceholder>
+            </mat-chip>
         </mat-chip-row>
     </mat-chip-grid>
     <input [placeholder]="placeholder" [matChipInputFor]="chipGrid" [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
