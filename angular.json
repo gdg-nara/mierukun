@@ -13,12 +13,7 @@
         "build": {
           "builder": "@angular-devkit/build-angular:browser",
           "options": {
-            "optimization": {
-              "styles": {
-                "inlineCritical": false
-              }
-            },
-            "outputPath": "extension",
+            "outputPath": "dist/mierukun",
             "index": "src/index.html",
             "main": "src/main.ts",
             "polyfills": [
@@ -28,15 +23,16 @@
             "assets": [
               "src/favicon.ico",
               "src/assets",
-              "src/manifest.json",
-              "src/popup.html",
-              "src/popup.js"
+              "src/manifest.webmanifest",
+              "src/sw.js"
             ],
             "styles": [
-              "@angular/material/prebuilt-themes/indigo-pink.css",
+              "@angular/material/prebuilt-themes/deeppurple-amber.css",
               "src/styles.css"
             ],
-            "scripts": []
+            "scripts": [],
+            "serviceWorker": true,
+            "ngswConfigPath": "ngsw-config.json"
           },
           "configurations": {
             "production": {
@@ -93,19 +89,20 @@
             "tsConfig": "tsconfig.spec.json",
             "assets": [
               "src/favicon.ico",
-              "src/assets"
+              "src/assets",
+              "src/manifest.webmanifest"
             ],
             "styles": [
-              "@angular/material/prebuilt-themes/indigo-pink.css",
+              "@angular/material/prebuilt-themes/deeppurple-amber.css",
               "src/styles.css"
             ],
             "scripts": []
           }
+        },
+        "deploy": {
+          "builder": "angular-cli-ghpages:deploy"
         }
       }
     }
-  },
-  "cli": {
-    "analytics": false
   }
 }
