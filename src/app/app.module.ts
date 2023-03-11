@@ -1,4 +1,4 @@
-import { NgModule } from '@angular/core';
+import { NgModule, isDevMode } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 
 import { MatGridListModule } from '@angular/material/grid-list';
@@ -29,6 +29,7 @@ import { FormsModule } from '@angular/forms';
 import { InputmoreComponent } from './components/inputmore/inputmore.component';
 // 黒板面積グラフを表示するためのコンポーネント
 import { KokubanChartComponent } from './components/kokuban-chart/kokuban-chart.component';
+import { ServiceWorkerModule } from '@angular/service-worker';
 
 @NgModule({
   declarations: [
@@ -54,7 +55,13 @@ import { KokubanChartComponent } from './components/kokuban-chart/kokuban-chart.
     DragDropModule,
     MatButtonModule,
     MatInputModule,
-    FormsModule
+    FormsModule,
+    ServiceWorkerModule.register('ngsw-worker.js', {
+      enabled: !isDevMode(),
+      // Register the ServiceWorker as soon as the application is stable
+      // or after 30 seconds (whichever comes first).
+      registrationStrategy: 'registerWhenStable:30000'
+    })
   ],
   providers: [],
   bootstrap: [AppComponent]
