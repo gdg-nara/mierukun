@@ -28,9 +28,6 @@
             "assets": [
               "src/favicon.ico",
               "src/assets",
-              "src/manifest.json",
-              "src/popup.html",
-              "src/popup.js",
               "src/manifest.webmanifest"
             ],
             "styles": [
