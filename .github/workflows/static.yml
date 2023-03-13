@@ -45,7 +45,7 @@ jobs:
         run: npm ci
 
       - name: Build
-        run: npm run ng -- build --base-href=https://${{ github.repository_owner }}.github.io/${GITHUB_REPOSITORY#${GITHUB_REPOSITORY_OWNER}/}/ --output-path=${{ runner.temp }}/${{ github.sha }}
+        run: npm run build -- --base-href=https://${{ github.repository_owner }}.github.io/${GITHUB_REPOSITORY#${GITHUB_REPOSITORY_OWNER}/}/ --output-path=${{ runner.temp }}/${{ github.sha }}
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v1
