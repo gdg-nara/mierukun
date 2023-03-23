@@ -1,4 +1,4 @@
-import { Component, HostListener, Input, OnInit } from '@angular/core';
+import { Component, ElementRef, HostListener, Input, OnInit, ViewChild } from '@angular/core';
 import { Inject, Injectable, LOCALE_ID, NgZone } from '@angular/core';
 import { Observable, of, Subject } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
@@ -14,6 +14,8 @@ export class KokubanChartComponent implements OnInit {
   constructor(
     private scriptLoader: ScriptLoaderService
   ) { }
+
+  @ViewChild('chart_aria') chartAria!: ElementRef;
 
   private readonly chartaria = 'chart-aria';
   private dataTable = new Map<string, number>();
@@ -59,6 +61,24 @@ export class KokubanChartComponent implements OnInit {
     });
   }
 
+  /**
+   * onClickDownloadPNG
+   */
+  public async onClickDownloadPNG(event: UIEvent): Promise<void> {
+    const a = document.createElement('a');
+    a.href = await this.getPNGuri() || '';
+    a.download = Date.now() + '.png';
+    a.click();
+  }
+
+  private async getPNGuri(): Promise<string | null> {
+    const svg = (this.chartAria.nativeElement as HTMLDivElement).querySelector('svg');
+    if (svg) {
+      return (await this.svg2png(svg)).href;
+    }
+    return null;
+  }
+
   private drawChart(): void {
     if (this.dataTable.size > 0) {
       let color = Math.random();
@@ -76,6 +96,30 @@ export class KokubanChartComponent implements OnInit {
     }
   }
 
+  private svg2png(svg: SVGSVGElement): Promise<URL> {
+    const data = new XMLSerializer().serializeToString(svg);
+    const width = svg.width.baseVal.value;
+    const height = svg.height.baseVal.value;
+
+    const canvas = document.createElement('canvas');
+    canvas.width = width;
+    canvas.height = height;
+
+    const context = canvas.getContext('2d');
+
+    return new Promise((resolve, reject) => {
+      const image = new Image(width, height);
+      image.onload = () => {
+        context?.drawImage(image, 0, 0, width, height);
+        resolve(new URL(canvas.toDataURL()));
+      };
+      image.onerror = (e) => {
+        reject(e);
+      };
+      image.src = 'data:image/svg+xml;charset=utf-8;base64,' + utf8_to_b64(data);
+    });
+  }
+
   // window.resize イベントでグラフを再描画する
   @HostListener('window:resize', ['$event'])
   onWindowResize(event: UIEvent): void {
@@ -83,6 +127,13 @@ export class KokubanChartComponent implements OnInit {
   }
 }
 
+function utf8_to_b64(str: string): string {
+  return window.btoa(window.unescape(window.encodeURIComponent(str)));
+}
+
+function b64_to_utf8(str: string): string {
+  return window.decodeURIComponent(window.escape(window.atob(str)));
+}
 
 /**
  * Google Charts Loader
