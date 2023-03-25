@@ -65,10 +65,13 @@ export class KokubanChartComponent implements OnInit {
    * onClickDownloadPNG
    */
   public async onClickDownloadPNG(event: UIEvent): Promise<void> {
-    const a = document.createElement('a');
-    a.href = await this.getPNGuri() || '';
-    a.download = Date.now() + '.png';
-    a.click();
+    const uri = await this.getPNGuri();
+    if (uri) {
+      const a = document.createElement('a');
+      a.href = uri;
+      a.download = Date.now() + '.png';
+      a.click();
+    }
   }
 
   private async getPNGuri(): Promise<string | null> {
