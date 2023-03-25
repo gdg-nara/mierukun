@@ -81,7 +81,7 @@ export class KokubanChartComponent implements OnInit {
 
   private drawChart(): void {
     if (this.dataTable.size > 0) {
-      let color = Math.random();
+      let color = 0;
       const dataArray: Array<any> = [
         ['Kind', 'Parent', 'Time', 'Color'],
         ['root', null, NaN, NaN]
