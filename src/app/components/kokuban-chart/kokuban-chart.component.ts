@@ -3,6 +3,8 @@ import { Inject, Injectable, LOCALE_ID, NgZone } from '@angular/core';
 import { Observable, of, Subject } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
 
+import { RecorderService } from '../../services/recorder.service';
+
 declare const google: any;
 
 @Component({
@@ -12,7 +14,8 @@ declare const google: any;
 })
 export class KokubanChartComponent implements OnInit {
   constructor(
-    private scriptLoader: ScriptLoaderService
+    private scriptLoader: ScriptLoaderService,
+    private recorder: RecorderService
   ) { }
 
   @ViewChild('chart_aria') chartAria!: ElementRef;
@@ -70,6 +73,19 @@ export class KokubanChartComponent implements OnInit {
       const a = document.createElement('a');
       a.href = uri;
       a.download = Date.now() + '.png';
+      a.click();
+    }
+  }
+
+  /**
+   * onClickDownloadCSV
+   */
+  public onClickDownloadCSV(event: UIEvent): void {
+    const url = this.recorder.export2csv();
+    if (url) {
+      const a = document.createElement('a');
+      a.href = url.href;
+      a.download = Date.now() + '.csv';
       a.click();
     }
   }

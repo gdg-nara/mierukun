@@ -43,16 +43,4 @@ export class AppComponent {
     const total = this.recorder.getTotal(event.button);
     this.treeData.set(event.button, total);
   }
-
-  createReport() {
-    const url = this.recorder.export2csv();
-    if (!url) {
-      console.warn('出力するデータがありません。');
-    } else {
-      const link = document.createElement('a');
-      link.download = new Date().toTimeString();
-      link.href = url.href;
-      link.click();
-    }
-  }
 }

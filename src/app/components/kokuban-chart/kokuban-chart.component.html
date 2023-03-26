@@ -10,8 +10,8 @@
             <div #chart_aria id="chart-aria"></div>
         </div>
     </mat-card-content>
-    <mat-card-actions>
+    <mat-card-actions align="end">
         <button mat-button (click)="onClickDownloadPNG($event)">PNG</button>
-        <!-- <button mat-button>CSV</button> -->
+        <button mat-button (click)="onClickDownloadCSV($event)">CSV</button>
     </mat-card-actions>
 </mat-card>
