@@ -11,7 +11,17 @@
         </div>
     </mat-card-content>
     <mat-card-actions align="end">
-        <button mat-button (click)="onClickDownloadPNG($event)">PNG</button>
-        <button mat-button (click)="onClickDownloadCSV($event)">CSV</button>
+        <button mat-icon-button [disabled]="!isDrawn" [matMenuTriggerFor]="menu">
+            <mat-icon>download</mat-icon>
+        </button>
+        <mat-menu #menu="matMenu">
+            <button mat-menu-item (click)="onClickDownloadPNG($event)">
+                <span>PNG</span>
+            </button>
+            <button mat-menu-item (click)="onClickDownloadCSV($event)">
+                <span>CSV</span>
+            </button>
+        </mat-menu>
+
     </mat-card-actions>
 </mat-card>

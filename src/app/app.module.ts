@@ -15,6 +15,7 @@ import { MatTabsModule } from '@angular/material/tabs';
 import { MatChipsModule } from '@angular/material/chips';
 import { MatButtonModule } from '@angular/material/button';
 import { MatInputModule } from '@angular/material/input';
+import { MatMenuModule } from '@angular/material/menu';
 import { DragDropModule } from '@angular/cdk/drag-drop';
 
 import { AppRoutingModule } from './app-routing.module';
@@ -48,6 +49,7 @@ import { KokubanChartComponent } from './components/kokuban-chart/kokuban-chart.
     MatTabsModule,
     MatIconModule,
     MatChipsModule,
+    MatMenuModule,
     DragDropModule,
     MatButtonModule,
     MatInputModule,

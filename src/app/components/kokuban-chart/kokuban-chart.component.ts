@@ -58,6 +58,10 @@ export class KokubanChartComponent implements OnInit {
     }
   }
 
+  public get isDrawn(): boolean {
+    return this.dataTable.size > 0;
+  }
+
   ngOnInit(): void {
     this.scriptLoader.loadChartPackages('treemap').subscribe(() => {
       this.drawChart();
