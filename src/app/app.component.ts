@@ -20,12 +20,9 @@ export class AppComponent {
   // app-buttonset コンポーネントへの入力
   // ボタンの文字列の配列
   public buttonset: string[] = [
-    '先生の説明',
-    '先生←→全体',
-    '生徒個別活動',
-    '生徒共同作業',
-    '生徒ペア (近隣) 活動',
-    '生徒グループ活動'
+    '一斉学習',
+    '個別学習',
+    '協働学習'
   ];
 
   /**
@@ -42,17 +39,5 @@ export class AppComponent {
 
     const total = this.recorder.getTotal(event.button);
     this.treeData.set(event.button, total);
-  }
-
-  createReport() {
-    const url = this.recorder.export2csv();
-    if (!url) {
-      console.warn('出力するデータがありません。');
-    } else {
-      const link = document.createElement('a');
-      link.download = new Date().toTimeString();
-      link.href = url.href;
-      link.click();
-    }
   }
 }
