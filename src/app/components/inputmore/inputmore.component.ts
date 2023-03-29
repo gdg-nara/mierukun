@@ -1,7 +1,10 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { COMMA, ENTER } from '@angular/cdk/keycodes';
 import { MatChipEditedEvent, MatChipInputEvent } from '@angular/material/chips';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { Clipboard } from '@angular/cdk/clipboard';
 import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
+import { SEARCHPARAM_KEY_BUTTON } from 'src/app/app.component';
 
 @Component({
   selector: 'app-inputmore',
@@ -9,6 +12,11 @@ import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
   styleUrls: ['./inputmore.component.css']
 })
 export class InputmoreComponent {
+  constructor(
+    private matSnackBar: MatSnackBar,
+    private clipboard: Clipboard
+  ) { }
+
   @Input() label!: string;
   @Input() placeholder!: string;
 
@@ -55,5 +63,25 @@ export class InputmoreComponent {
   drop(event: CdkDragDrop<string[]>): void {
     moveItemInArray(this.names, event.previousIndex, event.currentIndex);
     this.namesChange.emit(Array.from(this.names));
+  }
+
+  onClickCopyButton(event: UIEvent): void {
+    if (this.names.length > 0) {
+      const url = new URL(document.location.href);
+      url.searchParams.delete(SEARCHPARAM_KEY_BUTTON);
+      for (const name of this.names) {
+        url.searchParams.append(SEARCHPARAM_KEY_BUTTON, name);
+      }
+      const result = this.clipboard.copy(url.href);
+      if (result) {
+        this.openSnackBar('Copy succeeded.', 'OK');
+      } else {
+        this.openSnackBar('Failed to copy.', 'OK');
+      }
+    }
+  }
+
+  openSnackBar(message: string, action: string): void {
+    this.matSnackBar.open(message, action);
   }
 }
