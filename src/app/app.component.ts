@@ -2,6 +2,8 @@ import { Component } from '@angular/core';
 import { ClickButtonset } from './components/buttonset/buttonset.component';
 import { RecorderService } from './services/recorder.service';
 
+export const SEARCHPARAM_KEY_BUTTON = 'b';
+
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
@@ -10,7 +12,13 @@ import { RecorderService } from './services/recorder.service';
 export class AppComponent {
   constructor(
     private recorder: RecorderService
-  ) { }
+  ) {
+    const url = new URL(document.location.href);
+    if (url.searchParams.has(SEARCHPARAM_KEY_BUTTON)) {
+      const buttons = url.searchParams.getAll(SEARCHPARAM_KEY_BUTTON);
+      this.buttonset = buttons;
+    }
+  }
 
   title = 'mierukun';
   textValue: string = '';
