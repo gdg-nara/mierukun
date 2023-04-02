@@ -53,18 +53,7 @@ export class ButtonsetComponent implements OnDestroy {
 
 
   ngOnDestroy(): void {
-    const now = Date.now();
-    for (const [name, state] of this.buttonsetState) {
-      if (state.started) {
-        state.started = false;
-
-        this.clickButtonset.emit({
-          button: name,
-          event: 'END',
-          time: now
-        });
-      }
-    }
+    this.deactiveAll();
   }
 
   /**
@@ -115,6 +104,21 @@ export class ButtonsetComponent implements OnDestroy {
         event: buttonState.started ? 'START' : 'END',
         time: now
       });
+    }
+  }
+
+  public deactiveAll(): void {
+    const now = Date.now();
+    for (const [name, state] of this.buttonsetState) {
+      if (state.started) {
+        state.started = false;
+
+        this.clickButtonset.emit({
+          button: name,
+          event: 'END',
+          time: now
+        });
+      }
     }
   }
 }

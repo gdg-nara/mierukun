@@ -88,12 +88,18 @@ export class RecorderService {
 
   /**
    * すべての種別の現在の合計時間を返す
-   * @returns {Map<string, {time:number}} 全種別の合計時間
+   * 終了していないイベントは現在時刻までの時間を仮に設定する
+   * @returns {Map<string, number>} 全種別の合計時間
    */
-  public getAllTotal(): Map<string, { time: number }> {
-    const all = new Map<string, { time: number }>();
+  public getAllTotal(): Map<string, number> {
+    const all = new Map<string, number>();
     for (const [kind, total] of this.total) {
-      all.set(kind, { time: total.time });
+      let time = total.time;
+      if (!isNaN(total.lastTime)) {
+        const now = Date.now();
+        time = time + now - total.lastTime;
+      }
+      all.set(kind, time);
     }
     return all;
   }
