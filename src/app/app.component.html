@@ -9,43 +9,33 @@
   </mat-sidenav>
 
   <mat-sidenav-content>
-    <mat-tab-group dynamicHeight selectedIndex="1">
-      <mat-tab>
-        <ng-template mat-tab-label>
-          <mat-icon class="tab-icon">tune</mat-icon>
-          <span>First</span>
+    <mat-stepper [selectedIndex]="selectedIndex" (selectionChange)="onSelectionChange($event)">
+      <mat-step [completed]="buttonset.length > 0" [editable]="isButtonEditable">
+        <ng-template matStepLabel>
+          <span>設定</span>
         </ng-template>
-        <ng-template matTabContent>
-          <div class="content-container">
-            <app-inputmore label="ボタンの名前" placeholder="例: グループ活動" [(names)]="buttonset"></app-inputmore>
-          </div>
+        <ng-template matStepContent>
+          <app-inputmore label="ボタンの名前" placeholder="例: グループ活動" [(names)]="buttonset"></app-inputmore>
         </ng-template>
-      </mat-tab>
-
-      <mat-tab>
-        <ng-template mat-tab-label>
-          <mat-icon class="tab-icon">school</mat-icon>
-          <span>Second</span>
+      </mat-step>
+      <mat-step>
+        <ng-template matStepLabel>
+          <span>記録</span>
         </ng-template>
-        <div class="content-container" role="main">
+        <ng-template matStepContent>
           <app-buttonset [buttonset]="buttonset" (clickButtonset)="onClickButtonset($event)"
             [multiple]="false"></app-buttonset>
-        </div>
-      </mat-tab>
-
-      <mat-tab>
-        <ng-template mat-tab-label>
-          <mat-icon class="tab-icon">analytics</mat-icon>
-          <span>Third</span>
         </ng-template>
-        <ng-template matTabContent>
-
-          <div class="content-container">
-            <app-kokuban-chart [data]="treeData"></app-kokuban-chart>
-          </div>
+      </mat-step>
+      <mat-step [editable]="false">
+        <ng-template matStepLabel>
+          <span>結果</span>
         </ng-template>
-      </mat-tab>
-    </mat-tab-group>
+        <ng-template matStepContent>
+          <app-kokuban-chart [data]="treeData"></app-kokuban-chart>
+        </ng-template>
+      </mat-step>
+    </mat-stepper>
   </mat-sidenav-content>
 </mat-sidenav-container>
 

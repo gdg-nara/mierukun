@@ -1,5 +1,4 @@
-import { Component, ElementRef, HostListener, Input, OnInit, ViewChild } from '@angular/core';
-import { Inject, Injectable, LOCALE_ID, NgZone } from '@angular/core';
+import { Component, ElementRef, HostListener, Input, OnChanges, AfterContentChecked, SimpleChanges, ViewChild, Inject, Injectable, LOCALE_ID, NgZone } from '@angular/core';
 import { Observable, of, Subject } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
 
@@ -12,7 +11,7 @@ declare const google: any;
   templateUrl: './kokuban-chart.component.html',
   styleUrls: ['./kokuban-chart.component.css']
 })
-export class KokubanChartComponent implements OnInit {
+export class KokubanChartComponent implements OnChanges, AfterContentChecked {
   constructor(
     private scriptLoader: ScriptLoaderService,
     private recorder: RecorderService
@@ -62,10 +61,15 @@ export class KokubanChartComponent implements OnInit {
     return this.dataTable.size > 0;
   }
 
-  ngOnInit(): void {
+  ngOnChanges(changes: SimpleChanges): void {
     this.scriptLoader.loadChartPackages('treemap').subscribe(() => {
       this.drawChart();
     });
+  }
+
+  ngAfterContentChecked(): void {
+    const total = this.recorder.getAllTotal();
+    this.dataTable = total;
   }
 
   /**
