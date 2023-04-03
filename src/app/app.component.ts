@@ -16,6 +16,8 @@ export class AppComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
+    window.addEventListener('beforeunload', this.onBeforeunload);
+
     const url = new URL(document.location.href);
     if (url.searchParams.has(SEARCHPARAM_KEY_BUTTON)) {
       const buttons = url.searchParams.getAll(SEARCHPARAM_KEY_BUTTON);
@@ -46,7 +48,7 @@ export class AppComponent implements OnInit {
 
   /**
    * ボタンがクリックされたときに呼び出されるイベントハンドラ 
-   * @param {ClickButtonset } event - クリックされたボタンの情報
+   * @param {ClickButtonset} event - クリックされたボタンの情報
    */
   public onClickButtonset(event: ClickButtonset): void {
     console.debug(event);
@@ -57,5 +59,23 @@ export class AppComponent implements OnInit {
     });
 
     this.isButtonEditable = false;
+  }
+
+  /**
+   * リロードを抑制する
+   * @see {@link https://developer.mozilla.org/ja/docs/Web/API/Window/beforeunload_event}
+   * @param event - Window: beforeunload イベンドインターフェイス
+   * @returns {string} 一部のブラウザが確認ダイアログで表示する文字列
+   */
+  private onBeforeunload(event: BeforeUnloadEvent): string {
+    // this.updateMetadata(this.current.pack, this.current.deck, this.current.discard);
+    const confirmationMessage = '';
+    // Cancel the event as stated by the standard.
+    event.preventDefault();
+    // Chrome requires returnValue to be set.
+    // Gecko + IE
+    (event || window.event).returnValue = confirmationMessage;
+    // Safari, Chrome, and other WebKit-derived browsers
+    return confirmationMessage;
   }
 }
