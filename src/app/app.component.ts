@@ -26,7 +26,7 @@ export class AppComponent implements OnInit {
     }
   }
 
-  title = 'mierukun';
+  title = '（仮）みえるもん';
   textValue: string = '';
   selectedIndex: number = 0;
   isButtonEditable: boolean = true;
