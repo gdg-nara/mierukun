@@ -26,7 +26,7 @@ export class AppComponent implements OnInit {
     }
   }
 
-  title = '（仮）みえるもん';
+  title = '（仮）みえるくん';
   textValue: string = '';
   selectedIndex: number = 0;
   isButtonEditable: boolean = true;
