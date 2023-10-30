@@ -107,6 +107,9 @@ export class ButtonsetComponent implements OnDestroy {
     }
   }
 
+  /**
+   * すべてのボタンをOFFにする
+   */
   public deactiveAll(): void {
     const now = Date.now();
     for (const [name, state] of this.buttonsetState) {
