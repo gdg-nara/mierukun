@@ -18,6 +18,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatStepperModule } from '@angular/material/stepper';
+import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import { DragDropModule } from '@angular/cdk/drag-drop';
 import { ClipboardModule } from '@angular/cdk/clipboard';
 
@@ -55,6 +56,7 @@ import { KokubanChartComponent } from './components/kokuban-chart/kokuban-chart.
     MatMenuModule,
     MatSnackBarModule,
     MatStepperModule,
+    MatButtonToggleModule,
     DragDropModule,
     ClipboardModule,
     MatButtonModule,

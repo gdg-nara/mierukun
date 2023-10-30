@@ -3,8 +3,11 @@ import { Observable, of, Subject } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
 
 import { RecorderService } from '../../services/recorder.service';
+import { MatButtonToggleChange } from '@angular/material/button-toggle';
 
 declare const google: any;
+
+type ChartType = 'Treemap' | 'PieChart' | 'ColumnChart';
 
 @Component({
   selector: 'app-kokuban-chart',
@@ -19,37 +22,12 @@ export class KokubanChartComponent implements OnChanges, AfterContentChecked {
 
   @ViewChild('chart_aria') chartAria!: ElementRef;
 
+  public chartType: ChartType = 'Treemap';
+
   private readonly chartaria = 'chart-aria';
   private dataTable = new Map<string, number>();
-  private treeDataTable: any;
-  private treeMap: any;
-  private treeMapOptions = {
-    enableHighlight: true,
-    maxDepth: 1,
-    maxPostDepth: 1,
-    // minHighlightColor: '#8c6bb1',
-    // midHighlightColor: '#9ebcda',
-    // maxHighlightColor: '#edf8fb',
-    hintOpacity: 0.1,
-    maxColor: '#ee8100',
-    minColor: '#009688',
-    midColor: '#f7f7f7',
-    headerHeight: 0,
-    showScale: false,
-    showTooltips: true,
-    // height: 500,
-    useWeightedAverageForAggregation: true,
-    // Use click to highlight and double-click to drill down.
-    eventsConfig: {
-      highlight: ['click'],
-      unhighlight: ['mouseout'],
-      rollup: ['contextmenu'],
-      drilldown: ['dblclick'],
-    },
-    generateTooltip: (row: any, size: any, value: any) => {
-      return '';
-    }
-  };
+  private chartDataTable: any;
+  private chart: any;
 
   @Input() set data(data: Map<string, number>) {
     if (data) {
@@ -62,9 +40,7 @@ export class KokubanChartComponent implements OnChanges, AfterContentChecked {
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-    this.scriptLoader.loadChartPackages('treemap').subscribe(() => {
-      this.drawChart();
-    });
+    this.switchChartType(this.chartType);
   }
 
   ngAfterContentChecked(): void {
@@ -73,10 +49,18 @@ export class KokubanChartComponent implements OnChanges, AfterContentChecked {
   }
 
   /**
+   * onChangeChartType
+   */
+  public onChangeChartType(event: MatButtonToggleChange): void {
+    const chartType = event.value;
+    this.switchChartType(chartType);
+  }
+
+  /**
    * onClickDownloadPNG
    */
   public async onClickDownloadPNG(event: UIEvent): Promise<void> {
-    const uri = await this.getPNGuri();
+    const uri = await this.getImageURI();
     if (uri) {
       const a = document.createElement('a');
       a.href = uri;
@@ -98,60 +82,148 @@ export class KokubanChartComponent implements OnChanges, AfterContentChecked {
     }
   }
 
-  private async getPNGuri(): Promise<string | null> {
+  private async getImageURI(): Promise<string | null> {
+    if (this.chart.getImageURI) {
+      return this.chart.getImageURI();
+    }
     const svg = (this.chartAria.nativeElement as HTMLDivElement).querySelector('svg');
     if (svg) {
-      return (await this.svg2png(svg)).href;
+      return (await svg2png(svg)).href;
     }
     return null;
   }
 
-  private drawChart(): void {
-    if (this.dataTable.size > 0) {
-      let color = 0;
-      const dataArray: Array<any> = [
-        ['Kind', 'Parent', 'Time', 'Color'],
-        ['root', null, NaN, NaN]
-      ];
-      for (const [label, value] of this.dataTable) {
-        dataArray.push([label, 'root', value, color++]);
-      }
-      this.treeDataTable = new google.visualization.arrayToDataTable(dataArray);
-      this.treeMap = new google.visualization.TreeMap(document.getElementById(this.chartaria));
+  private switchChartType(chartType: ChartType): void {
+    switch (chartType) {
+      case 'Treemap':
+        this.drawTreemap();
+        break;
 
-      this.treeMap.draw(this.treeDataTable, this.treeMapOptions);
+      case 'PieChart':
+        this.drawPieChart();
+        break;
+
+      case 'ColumnChart':
+        this.drawColumnChart();
+        break;
+
+      default:
+        break;
     }
   }
 
-  private svg2png(svg: SVGSVGElement): Promise<URL> {
-    const data = new XMLSerializer().serializeToString(svg);
-    const width = svg.width.baseVal.value;
-    const height = svg.height.baseVal.value;
+  private drawTreemap(): void {
+    this.scriptLoader.loadChartPackages('treemap').subscribe(() => {
+      if (this.dataTable.size > 0) {
+        let color = 0;
+        const dataArray: Array<any> = [
+          ['Kind', 'Parent', 'Time', 'Color'],
+          ['root', null, NaN, color++]
+        ];
+        for (const [label, value] of this.dataTable) {
+          dataArray.push([label, 'root', value, color++]);
+        }
+        this.chartDataTable = new google.visualization.arrayToDataTable(dataArray);
+        this.chart = new google.visualization.TreeMap(document.getElementById(this.chartaria));
 
-    const canvas = document.createElement('canvas');
-    canvas.width = width;
-    canvas.height = height;
+        this.chart.draw(this.chartDataTable, {
+          enableHighlight: true,
+          maxDepth: 1,
+          maxPostDepth: 1,
+          // minHighlightColor: '#8c6bb1',
+          // midHighlightColor: '#9ebcda',
+          // maxHighlightColor: '#edf8fb',
+          hintOpacity: 0.1,
+          maxColor: '#ee8100',
+          minColor: '#009688',
+          midColor: '#f7f7f7',
+          headerHeight: 0,
+          showScale: false,
+          showTooltips: true,
+          // height: 500,
+          useWeightedAverageForAggregation: true,
+          eventsConfig: {
+            highlight: ['mouseover'],
+            unhighlight: ['mouseout'],
+            rollup: [],
+            drilldown: [],
+          },
+          generateTooltip: (row: any, size: any, value: any) => {
+            return '';
+          }
+        });
+      }
+    });
+  }
 
-    const context = canvas.getContext('2d');
+  private drawPieChart(): void {
+    this.scriptLoader.loadChartPackages('corechart').subscribe(() => {
+      if (this.dataTable.size > 0) {
+        const dataArray: Array<any> = [
+          ['Kind', 'Time']
+        ];
+        for (const [label, value] of this.dataTable) {
+          dataArray.push([label, value]);
+        }
+        this.chartDataTable = new google.visualization.arrayToDataTable(dataArray);
+        this.chart = new google.visualization.PieChart(document.getElementById(this.chartaria));
 
-    return new Promise((resolve, reject) => {
-      const image = new Image(width, height);
-      image.onload = () => {
-        context?.drawImage(image, 0, 0, width, height);
-        resolve(new URL(canvas.toDataURL()));
-      };
-      image.onerror = (e) => {
-        reject(e);
-      };
-      image.src = 'data:image/svg+xml;charset=utf-8;base64,' + utf8_to_b64(data);
+        this.chart.draw(this.chartDataTable);
+      }
+    });
+  }
+
+  private drawColumnChart(): void {
+    this.scriptLoader.loadChartPackages('corechart').subscribe(() => {
+      if (this.dataTable.size > 0) {
+        const dataArray: Array<any> = [
+          ['Kind', 'Time']
+        ];
+        for (const [label, value] of this.dataTable) {
+          dataArray.push([label, value]);
+        }
+        this.chartDataTable = new google.visualization.arrayToDataTable(dataArray);
+        this.chart = new google.visualization.ColumnChart(document.getElementById(this.chartaria));
+
+        this.chart.draw(this.chartDataTable, {
+          legend: {
+            position: 'none'
+          }
+        });
+      }
     });
   }
 
   // window.resize イベントでグラフを再描画する
   @HostListener('window:resize', ['$event'])
   onWindowResize(event: UIEvent): void {
-    this.treeMap.draw(this.treeDataTable, this.treeMapOptions);
+    this.switchChartType(this.chartType);
+    // this.chart.draw(this.chartDataTable, this.treeMapOptions);
   }
+}
+
+async function svg2png(svg: SVGSVGElement): Promise<URL> {
+  const data = new XMLSerializer().serializeToString(svg);
+  const width = svg.width.baseVal.value;
+  const height = svg.height.baseVal.value;
+
+  const canvas = document.createElement('canvas');
+  canvas.width = width;
+  canvas.height = height;
+
+  const context = canvas.getContext('2d');
+
+  return new Promise((resolve, reject) => {
+    const image = new Image(width, height);
+    image.onload = () => {
+      context?.drawImage(image, 0, 0, width, height);
+      resolve(new URL(canvas.toDataURL()));
+    };
+    image.onerror = (e) => {
+      reject(e);
+    };
+    image.src = 'data:image/svg+xml;charset=utf-8;base64,' + utf8_to_b64(data);
+  });
 }
 
 function utf8_to_b64(str: string): string {
